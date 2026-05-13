@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YIS Gallery | Contemporary Art</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #111;
+            background: #fff;
+            line-height: 1.6;
+        }
+        /* 导航栏 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            border-bottom: 1px solid #eee;
+        }
+        .nav-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .main-nav {
+            display: flex;
+            gap: 2.5rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-item > a {
+            text-decoration: none;
+            color: #111;
+            padding: 0.5rem 0;
+            display: inline-block;
+        }
+        .sub-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            min-width: 160px;
+            padding: 0.8rem 0;
+            display: none;
+            z-index: 99;
+        }
+        .sub-menu a {
+            display: block;
+            padding: 0.5rem 1.2rem;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.8rem;
+            text-transform: none;
+        }
+        .sub-menu a:hover {
+            background: #f5f5f5;
+        }
+        .nav-item:hover .sub-menu {
+            display: block;
+        }
+        /* 首屏 */
+        .hero {
+	margin-top: 60px;
+	height: 90vh;
+	width: 100%;
+	background: url('https://img.cdn1.vip/i/6a02e1bb484d6_1778573755.webp') center/cover no-repeat;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	text-align: center;
+        }
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+        }
+        .hero .tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+        .hero .date {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        /* 通用区块 */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 3rem;
+            color: #666;
+        }
+        /* 展览卡片 - 左右交替布局 */
+        .exhibition-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 6rem;
+            align-items: center;
+        }
+        .exhibition-item:nth-child(even) .exhibition-text {
+            order: 2;
+        }
+        .exhibition-item:nth-child(even) .exhibition-image {
+            order: 1;
+        }
+        .exhibition-image img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+        .exhibition-text .category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+            margin-bottom: 0.5rem;
+        }
+        .exhibition-text h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+        .exhibition-text .date {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .exhibition-text p {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+        .link {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #111;
+            text-decoration: none;
+            border-bottom: 1px solid #111;
+            padding-bottom: 0.2rem;
+        }
+        /* 艺术家/活动网格 */
+        .grid-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+        .grid-card img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+        .grid-card h4 {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 0.3rem;
+        }
+        .grid-card p {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        /* 黑色区块 */
+        .dark-section {
+            background: #111;
+            color: #fff;
+            padding: 5rem 2rem;
+        }
+        .dark-section .section-title {
+            color: #aaa;
+        }
+        .dark-section .link {
+            color: #fff;
+            border-color: #fff;
+        }
+        /* 页脚 */
+        footer {
+            background: #f8f8f8;
+            padding: 4rem 2rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .footer-grid {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .footer-col h5 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 0.5rem;
+        }
+        .footer-col ul li a {
+            color: #666;
+            text-decoration: none;
+        }
+        .footer-col ul li a:hover {
+            color: #111;
+        }
+        .copyright {
+            max-width: 1440px;
+            margin: 0 auto;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+        /* 锚点跳转偏移 */
+        section {
+            scroll-margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">YIS Gallery</div>
+            <nav class="main-nav">
+                <div class="nav-item"><a href="#home">Home</a></div>
+                <div class="nav-item">
+                    <a href="#">Exhibitions</a>
+                    <div class="sub-menu">
+                        <a href="#current">Current</a>
+                        <a href="#past">Past</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <a href="#">Events</a>
+                    <div class="sub-menu">
+                        <a href="#salons">Salons</a>
+                        <a href="#public">Public Programs</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <a href="#">Artists</a>
+                    <div class="sub-menu">
+                        <a href="#resident">Resident</a>
+                        <a href="#collaborating">Collaborating</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <a href="#">About</a>
+                    <div class="sub-menu">
+                        <a href="#space">Space</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 首屏 -->
+    <section id="home" class="hero">
+      <div class="hero-content">
+          <div class="tag">NEW SS 2026</div>
+        <h1><strong>More Than Gallery</strong></h1>
+<div class="date">EPS/01 | Guang Zhou</div>
+      </div>
+    </section>
+
+    <!-- 展览板块 -->
+    <section id="current" class="container">
+        <div class="section-title">Gallery Exhibitions</div>
+
+        <div class="exhibition-item">
+            <div class="exhibition-image">
+                <img src="work1.jpg/2.png" alt="Takis and Nam June Paik" width="800" height="600">
+            </div>
+            <div class="exhibition-text">
+                <div class="category">Gallery Exhibition | Seoul</div>
+                <h3>Takis and Nam June Paik: Duett</h3>
+                <div class="date">2 May – 5 June 2026</div>
+                <p>An exhibition celebrating the work of two pioneering media artists, exploring their dialogue with technology and visual culture.</p>
+                <a href="#" class="link">Visit Exhibition</a>
+            </div>
+        </div>
+
+        <div class="exhibition-item">
+            <div class="exhibition-image">
+                <img src="work1.jpg/3.png" alt="Katharina Grosse" width="800" height="600">
+            </div>
+            <div class="exhibition-text">
+                <div class="category">Gallery Exhibition | London</div>
+                <h3>Katharina Grosse: I Set Out, I Walked Fast</h3>
+                <div class="date">22 April – 31 May 2026</div>
+                <p>For more than three decades, Katharina Grosse has radically reshaped the terrain of painting. For this exhibition, painting does not belong to, in or on any particular surface, rather, it is a temporary ecology in which artist, site and viewer converge.</p>
+                <a href="#" class="link">Visit Exhibition</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="past" class="container" style="background: #f8f8f8;">
+        <div class="section-title">Past Exhibitions</div>
+        <ul style="list-style: none; font-size: 0.95rem; line-height: 2;">
+            <li>2026.03 水墨新语 — 东方当代水墨展</li>
+            <li>2026.01 微光集 — 青年艺术家群展</li>
+            <li>2025.11 静物与时间 — 油画双人展</li>
+            <li>2025.09 城市镜像 — 当代摄影展</li>
+        </ul>
+    </section>
+
+    <!-- 活动板块 -->
+    <section id="salons" class="container">
+        <div class="section-title">Events & Salons</div>
+        <div class="grid-section">
+            <div class="grid-card">
+                <img src="work2.jpg/0c1515356a25d518f6ddc51829f6b08d.jpg" alt="Artist Talk">
+                <h4>艺术家对谈沙龙｜创作与观看</h4>
+                <p>05.18 2026 | 15:00-17:00</p>
+            </div>
+            <div class="grid-card">
+                <img src="work2.jpg/9eb4df90769b3301e4b6bda885a6b92a.jpg" alt="Collection Talk">
+                <h4>艺术品收藏入门分享会</h4>
+                <p>05.25 2026 | 14:00-16:00</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="public" class="dark-section">
+        <div class="section-title">Public Programs</div>
+        <ul style="list-style: none; font-size: 0.95rem; line-height: 2; color: #ccc;">
+            <li>每周公益观展导览 | Every Saturday 14:00</li>
+            <li>青少年艺术工作坊 | 每月第一个周日</li>
+            <li>社区公共艺术介入项目 | 持续进行中</li>
+            <li>艺术与科技跨界论坛 | 2026.06.10</li>
+        </ul>
+    </section>
+
+    <!-- 艺术家板块 -->
+    <section id="resident" class="container">
+        <div class="section-title">Resident Artists</div>
+        <div class="grid-section">
+            <div class="grid-card">
+                <img src="work3.jpg/9193433e8f94c765e1c34d7fc10d69c8.jpg" alt="Chen Mo">
+                <h4>陈默 Chen Mo</h4>
+                <p>当代水墨 / 空间创作</p>
+            </div>
+            <div class="grid-card">
+                <img src="work3.jpg/a386806554b4ec3739557eac0372060f.jpg" alt="Liu Yan">
+                <h4>刘言 Liu Yan</h4>
+                <p>油画 / 具象绘画</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="collaborating" class="container" style="background: #f8f8f8;">
+        <div class="section-title">Collaborating Artists</div>
+        <div class="grid-section">
+            <div class="grid-card">
+                <img src="work4.jpg/4afe671e1cfd26983aaf63530be1d5f8.jpg" alt="Wang Xi">
+                <h4>王希 Wang Xi</h4>
+                <p>装置 / 综合材料</p>
+            </div>
+            <div class="grid-card">
+                <img src="work4.jpg/53fa558c9bda0de4914bf84bc3d3e900.jpg" alt="Lin Ye">
+                <h4>林野 Lin Ye</h4>
+                <p>摄影 / 影像艺术</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于艺廊 -->
+    <section id="space" class="container">
+        <div class="section-title">About YIS Gallery</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+          <div>
+                <img src="work5.jpg/f29eb1aa3602b0dbb6ebc10f67a2a518.jpg" alt="YIS Gallery Space" style="width: 100%;">
+            </div>
+            <div>
+              <h1 style="font-weight: 400; margin-bottom: 1rem;"><strong>ABOUT US</strong></h1>
+              <p style="font-size: 0.95rem; color: #555; line-height: 1.7;"> YIS believes that art should not exist solely within white walls, but flowinto the rhythms of contemporary living - becoming a medium thatconnects people, spaces, brands, and daily experience.</p>
+              <p style="font-size: 0.95rem; color: #555; line-height: 1.7;">&nbsp;</p>
+              <p style="font-size: 0.95rem; color: #555; line-height: 1.7;">YIS Gallery 创立于2025年，是致力于当代艺术展览策划、艺术家推广、艺文活动运营的独立艺术空间。我们以策展为核心，连接艺术家、藏家与公众，呈现多元、纯粹的艺术表达。空间设计注重光影与材质的对话，为观众提供沉浸式的艺术体验。 </p>
+              <p style="font-size: 0.95rem; color: #555; line-height: 1.7;">YS相信，艺术不应只停留于白盒子之中，而应进入当代生活的真实场景，成为连接人与空间、品牌与文化的媒介。&nbsp;</p>
+          </div>
+        </div>
+    </section>
+
+    <section id="contact" class="container" style="background: #f8f8f8;">
+        <div class="section-title">Contact</div>
+        <div style="max-width: 600px;">
+            <p style="font-size: 0.95rem; line-height: 2;">
+                <strong>地址</strong>：城市艺术区 A-03 YIS Gallery<br>
+                <strong>开放时间</strong>：周二至周日 10:00–18:00（周一闭馆）<br>
+                <strong>邮箱</strong>：info@yisgallery.com<br>
+                <strong>微信</strong>：YISGallery_Official
+            </p>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h5>About</h5>
+                <ul>
+                    <li><a href="#space">Space</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Artists</h5>
+                <ul>
+                    <li><a href="#resident">Resident</a></li>
+                    <li><a href="#collaborating">Collaborating</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Exhibitions</h5>
+                <ul>
+                    <li><a href="#current">Current</a></li>
+                    <li><a href="#past">Past</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Events</h5>
+                <ul>
+                    <li><a href="#salons">Salons</a></li>
+                    <li><a href="#public">Public Programs</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 YIS Gallery All Rights Reserved.
+        </div>
+    </footer>
+</body>
+</html>
